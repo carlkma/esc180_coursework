@@ -1,7 +1,7 @@
 # ESC180 Coursework
 
 ## About
-This repository contains my code for labs and projects of the course ESC180: Introduction to Computer Programming (Fall 2021).
+This repository contains my code for labs and projects of the course [ESC180](http://www.cs.toronto.edu/~guerzhoy/180/): Introduction to Computer Programming (Fall 2021).
 
 ## Academic Integrity
 Although this is a public repository under an open-source license, students taking the same course shall refrain from copying and/or plagiarizing the code. Details regarding the University’s policy on Academic Integrity can be found [here](https://www.academicintegrity.utoronto.ca/). The owner of this repository is **NOT** responsible for any academic offenses.
