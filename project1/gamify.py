@@ -1,3 +1,13 @@
+# ESC180 Project 1
+# gamify.py
+# Oct 14, 2021
+
+# Done in collaboration by:
+# Ma, Carl Ka To (macarl1) and
+# Xu, Shen Xiao Zhu (xushenxi)
+
+# NOTE: TEST RUN, SUBMISSION NOT FINAL
+
 def initialize():
     '''Initializes the global variables needed for the simulation.
     Note: this function is incomplete, and you may want to modify it'''
@@ -5,8 +15,8 @@ def initialize():
     global cur_hedons, cur_health, cur_time
     global last_activity, last_activity_duration, last_finished
     global bored_with_stars
-    global total_num_stars
-    total_num_stars = 0
+    global time_stars
+    time_stars = []
 
     global tired, star_offer_time
     tired = False
@@ -34,7 +44,12 @@ def initialize():
 
 def star_can_be_taken(activity):
     global bored_with_stars, cur_time, cur_star_activity
-    if total_num_stars > 2:
+    new_time_stars = []
+    for i in time_stars:
+        if not (max(time_stars) - i > 120):
+            new_time_stars.append(i)
+
+    if len(new_time_stars) > 2:
         bored_with_stars = True
     
     if star_offer_time == cur_time and not bored_with_stars and activity == cur_star_activity:
@@ -48,11 +63,11 @@ def perform_activity(activity, duration):
     global last_activity, last_activity_duration, last_finished
     global bored_with_stars
 
-    print("Performing: " + activity)
+    #print("Performing: " + activity)
     cur_hedons += estimate_hedons_delta(activity, duration)
-    print("Hedrons after " + activity + ": " + str(cur_hedons))
+    #print("Hedrons after " + activity + ": " + str(cur_hedons))
     cur_health += estimate_health_delta(activity, duration)
-    print("Health after " + activity + ": " + str(cur_health))
+    #print("Health after " + activity + ": " + str(cur_health))
     if activity == last_activity:
         last_activity_duration += duration
     else:
@@ -72,16 +87,15 @@ def get_cur_health():
     return cur_health
     
 def offer_star(activity):
-    global total_num_stars
-    global star_offer_time, cur_star_activity
+    global star_offer_time, cur_time, cur_star_activity
     star_offer_time = cur_time
     cur_star_activity = activity
-    total_num_stars += 1
+    time_stars.append(cur_time)
 
 
         
 def most_fun_activity_minute():
-    print("Calculating most_fun_activity_minute")
+    #print("Calculating most_fun_activity_minute")
     return max((estimate_hedons_delta(i,1), i) for i in ["running", "textbooks", "resting"])[1]
     
 ################################################################################
@@ -108,14 +122,14 @@ def estimate_hedons_delta(activity, duration):
     hedons_delta = 0    
 
     if tired == True:
-        print("Tired")
+        #print("Tired")
         if activity == "running" or activity == "textbooks":
             hedons_delta += -2 * duration
             
         if activity == "resting":
             hedons_delta += 0
     else:
-        print("Not tired")
+        #print("Not tired")
         if activity == "running":
             if duration <= 10:
                 hedons_delta += 2 * duration
@@ -130,7 +144,7 @@ def estimate_hedons_delta(activity, duration):
             hedons_delta += 0
 
     if star_can_be_taken(activity):
-        print("using star")
+        #print("using star")
         if duration <= 10:
             hedons_delta += 3 * duration
         else:
@@ -181,5 +195,3 @@ if __name__ == '__main__':
     perform_activity("running", 170)
     print(get_cur_health())            # 700 = 210 + 160 * 3 + 10 * 1         # Test 9
     print(get_cur_hedons())            # -430 = -90 + 170 * (-2)              # Test 10
-    
-    
