@@ -6,7 +6,7 @@
 # Ma, Carl Ka To (macarl1) and
 # Xu, Shen Xiao Zhu (xushenxi)
 
-# NOTE: TEST RUN, SUBMISSION NOT FINAL
+# NOTE: VERSION 2 - FINAL SUBMISSION (UNLESS UPDATED)
 
 def initialize():
     '''Initializes the global variables needed for the simulation.
@@ -39,14 +39,13 @@ def initialize():
     
     last_finished = -1000
     
-
             
 
 def star_can_be_taken(activity):
     global bored_with_stars, cur_time, cur_star_activity
     new_time_stars = []
     for i in time_stars:
-        if not (max(time_stars) - i > 120):
+        if not (max(time_stars) - i >= 120):
             new_time_stars.append(i)
 
     if len(new_time_stars) > 2:
@@ -114,7 +113,7 @@ def estimate_hedons_delta(activity, duration):
     '''Return the amount of hedons the user would get for performing activity
     activity for duration minutes'''
     global tired
-    if last_finished + 120 >= cur_time:
+    if last_finished + 120 > cur_time:
         tired = True
     else:
         tired = False
