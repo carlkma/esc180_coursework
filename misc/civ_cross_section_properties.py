@@ -10,9 +10,8 @@
 
 
 # ------------------------------ IMPORT MODULES ------------------------------ #
-import numpy as np
-import matplotlib.pyplot as plt
-import math
+
+# None
 
 # ------------------------------ CONSTANTS: Material Property ------------------------------ #
 
@@ -24,15 +23,12 @@ YOUNG = 4000
 POISSON = 0.2
 CEMENT_SHEAR = 2
 
-
-# ------------------------------ Content in Lecture 21 ------------------------------ #
-def get_I_local(b,h):
-	return b*h**3/12
-
+# ------------------------------ Area ------------------------------ #
 
 def get_A_local(b,h):
 	return b*h
 
+# ------------------------------ Centroidal axis ------------------------------ #
 
 def get_y_global(y_local,A_local):
 	'''
@@ -62,6 +58,12 @@ def get_y_global(y_local,A_local):
 
 	y_global = sum_y_local_A_local / sum(A_local) # y_global formula
 	return y_global
+
+# ------------------------------ Second moment of area ------------------------------ #
+
+def get_I_local(b,h):
+	return b*h**3/12
+
 
 def get_I_global(I_local, A_local, y_local, y_global):
 	'''
@@ -95,13 +97,10 @@ def get_I_global(I_local, A_local, y_local, y_global):
 		I_global += I_local[i] + A_local[i] * (y_local[i]-y_global)**2 # I_global formula
 	return I_global
 
+# ------------------------------ First moment of area ------------------------------ #
 
 
-def get_d_local(y_local, y_global):
-	return abs(y_local-y_global)
-
-
-def get_Q(A_local,d_local):
+def get_Q(A_local,y_local, y_global):
 	'''
 	INPUT:
 	A_local - a list of areas of individual shapes
@@ -117,37 +116,13 @@ def get_Q(A_local,d_local):
 		i.e. 10.88
 		units in mm^3
 	'''
-	if len(A_local) != len(d_local): # check if y_local and a_local have the same length
+	if not ( len(A_local) == len(y_local) ): # check if A_local and y_local have the same length
 		print("Error: unequal dimensions")
 		return None
 
 	Q = 0 # numerator of Q formula
 
-	for i in range(len(A_local)):
-		Q += A_local[i] * d_local[i]
+	for i in range(len(y_local)):
+		Q += A_local[i] * abs(y_local[i]-y_global)
 
 	return Q
-
-
-
-
-# ------------------------------ LICENSE ------------------------------ #
-'''
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-'''

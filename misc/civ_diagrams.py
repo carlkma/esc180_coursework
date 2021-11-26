@@ -10,20 +10,22 @@
 
 
 # ------------------------------ IMPORT MODULES ------------------------------ #
+
 import numpy as np
-import matplotlib.pyplot as plt
-import math
+import matplotlib.pyplot as plt 
 
 # ------------------------------ CONSTANTS: Structure Property ------------------------------ #
 
-
 D_TO_RIGHT_SUPPORT = 550+510
+
 # ------------------------------ Content in Lecture 21 ------------------------------ #
+
 point_loads = []
 
 def reset_loads():
 	global point_loads
 	point_loads = []
+	return point_loads
 
 def add_point_load(point_loads, location, magnitude):
 	point_loads.append((location, -1 * magnitude))
@@ -40,12 +42,7 @@ def get_reaction_forces(point_loads):
 	return left_reaction, right_reaction
 
 
-add_point_load(point_loads, 550, 185)
-add_point_load(point_loads, 1250, 185)
-reaction_forces = get_reaction_forces(point_loads)
-
-
-def generate_sfd(point_loads):
+def generate_sfd(point_loads, reaction_forces):
 	point_loads.append((0, reaction_forces[0]))
 	point_loads.append((D_TO_RIGHT_SUPPORT, reaction_forces[1]))
 	
@@ -70,7 +67,7 @@ def generate_sfd(point_loads):
 	plt.show()
 	return sfd
 
-sfd = generate_sfd(point_loads)
+
 
 def generate_bmd(sfd):
 	bmd = [(0,0)]
@@ -89,28 +86,3 @@ def generate_bmd(sfd):
 	plt.axhline(y=0, c="black")
 	plt.show()
 	return bmd
-
-bmd = generate_bmd(sfd)
-
-
-
-# ------------------------------ LICENSE ------------------------------ #
-'''
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-'''

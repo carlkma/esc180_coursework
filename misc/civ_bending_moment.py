@@ -1,4 +1,4 @@
-# civ.py
+# civ_bending_moment.py
 # CIV102 Bridge Project
 
 # Fall 2021
@@ -10,8 +10,7 @@
 
 
 # ------------------------------ IMPORT MODULES ------------------------------ #
-import numpy as np
-import matplotlib.pyplot as plt
+
 import math
 
 # ------------------------------ CONSTANTS: Material Property ------------------------------ #
@@ -24,36 +23,19 @@ YOUNG = 4000
 POISSON = 0.2
 CEMENT_SHEAR = 2
 
+# ------------------------------ 4.4-4.6 Bending moment ------------------------------ #
+# 4.4 Bending moment causing matboard tension failure
+# 4.5 Bending moment causing glue compression failure
+# 4.6 Bending moment causing matboard flexural buckling failure
 
-# ------------------------------ Content in Lecture 21 ------------------------------ #
+def get_bending_moment(y, I, sigma):
+	return I*sigma/y
 
-def get_tensile_moment(I, y):
-	return I*T_STRENGTH
+def get_sigma_ultimate(force):
+	if force == "tension":
+		return T_STRENGTH
+	if force == "compression":
+		return C_STRENGTH
 
-def get_compressive_moment(I, y):
-	return I*C_STRENGTH
-
-
-
-
-
-# ------------------------------ LICENSE ------------------------------ #
-'''
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-'''
+def get_sigma_critical(k, t, b):
+	return k * (math.pi)**2 * YOUNG / 12 / (1-POISSON**2) * (t/b)**2
