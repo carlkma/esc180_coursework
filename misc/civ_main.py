@@ -19,6 +19,7 @@ import civ_shear_force as sf
 import civ_bending_moment as bm
 import civ_cross_section_properties as csp
 import civ_diagrams as dg
+import civ_midspan_deflection as msd
 
 # ------------------------------ CONSTANTS: Material Property ------------------------------ #
 
@@ -56,12 +57,22 @@ print("Second moment of area is: %g (mm^4)" % I_global)
 
 y_local_Q = [1.27,21.4858,21.4858]
 A_local_Q = [csp.get_A_local(80,1.27),csp.get_A_local(y_global-1.27,1.27),csp.get_A_local(y_global-1.27,1.27)]
-Q = csp.get_Q(A_local_Q,y_local_Q,y_global)
-print("First moment of area at the centroidal axis is: %g (mm^3)" % Q)
+Q_cent = csp.get_Q(A_local_Q,y_local_Q,y_global)
+print("First moment of area at the centroidal axis is: %g (mm^3)" % Q_cent)
+
+# ------------------------------ Design 0 - Q at the glue surface ------------------------------ #
+
+y_local_Q_glue = [y_global-1.27/2]
+A_local_Q_glue = [csp.get_A_local(100,1.27)]
+Q_glue = csp.get_Q(A_local_Q_glue,y_local_Q_glue,y_global)
+print("First moment of area at the glue surface is: %g (mm^3)" % Q_glue)
+
+shear_4_1 = sf.get_shear_force(Q_cent, I_global, 1.27*2, sf.get_tau_ultimate("matboard"))
+print("4.1: Shear force causing matboard shear failure is: %g (N)" % shear_4_1)
 
 
-
-
+shear_4_2 = sf.get_shear_force(Q_cent, I_global, 10*2, sf.get_tau_ultimate("glue"))
+print("4.2: Shear force causing glue shear failure is: %g (N)" % shear_4_2)
 
 point_loads = dg.reset_loads()
 dg.add_point_load(point_loads, 550, 185)
@@ -69,3 +80,6 @@ dg.add_point_load(point_loads, 1250, 185)
 reaction_forces = dg.get_reaction_forces(point_loads)
 sfd = dg.generate_sfd(point_loads, reaction_forces)
 bmd = dg.generate_bmd(sfd)
+print(bmd)
+print(msd.get_tangential_deviation_mid(bmd, YOUNG, I_global))
+print("done")
