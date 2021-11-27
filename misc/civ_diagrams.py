@@ -89,30 +89,3 @@ def generate_bmd(sfd):
 	plt.show()
 '''
 	return bmd
-
-def generate_sfd_with_material_shear(point_loads, reaction_forces, shear_4_1):
-	point_loads.append((0, reaction_forces[0]))
-	point_loads.append((D_TO_RIGHT_SUPPORT, reaction_forces[1]))
-	
-	forces = sorted(point_loads)
-
-	sfd = [(0,0)]
-	sfd.append(forces[0])
-	for i in range(1, len(forces)):
-		sfd.append((forces[i][0], sfd[-1][1]))
-		sfd.append((forces[i][0], forces[i][1] + sfd[-1][1]))
-
-	
-	plt.plot(*zip(*sfd))
-	plt.title("SFD")
-	plt.xlabel("Distance from Left Support (mm)")
-	plt.ylabel("Shear Force (N)")
-	ax = plt.gca()
-	ax.grid(True)
-	plt.axhline(y=0, c="black")
-	plt.axhline(y=shear_4_1, c="red")
-	plt.axhline(y=-1*shear_4_1, c="red")
-	plt.xlim(0,1300)
-	#plt.ylim(-200,200)
-	plt.show()
-	return sfd

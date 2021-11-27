@@ -23,10 +23,18 @@ YOUNG = 4000
 POISSON = 0.2
 CEMENT_SHEAR = 2
 
+# ------------------------------ CONSTANTS: Structure Property ------------------------------ #
+
+height = None
+
 # ------------------------------ 4.4-4.6 Bending moment ------------------------------ #
 # 4.4 Bending moment causing matboard tension failure
 # 4.5 Bending moment causing matboard compression failure
 # 4.6 Bending moment causing matboard flexural buckling failure
+
+def set_height(h):
+	global height
+	height = h
 
 def get_sigma_ultimate(force):
 	if force == "tension":
@@ -38,10 +46,10 @@ def get_bending_moment(y_global, I, sigma, curvature):
 	if sigma>0 and curvature == "concave up":
 		return I*sigma/y_global
 	if sigma<0 and curvature == "concave up":
-		return I*sigma/(75-y_global)
+		return I*sigma/(height-y_global)
 
 	if sigma>0 and curvature == "concave down":
-		return I*sigma/(75-y_global)
+		return I*sigma/(height-y_global)
 
 	if sigma<0 and curvature == "concave down":
 		return I*sigma/y_global
