@@ -25,17 +25,26 @@ CEMENT_SHEAR = 2
 
 # ------------------------------ 4.4-4.6 Bending moment ------------------------------ #
 # 4.4 Bending moment causing matboard tension failure
-# 4.5 Bending moment causing glue compression failure
+# 4.5 Bending moment causing matboard compression failure
 # 4.6 Bending moment causing matboard flexural buckling failure
-
-def get_bending_moment(y, I, sigma):
-	return I*sigma/y
 
 def get_sigma_ultimate(force):
 	if force == "tension":
 		return T_STRENGTH
 	if force == "compression":
-		return C_STRENGTH
+		return -1*C_STRENGTH
+
+def get_bending_moment(y_global, I, sigma, curvature):
+	if sigma>0 and curvature == "concave up":
+		return I*sigma/y_global
+	if sigma<0 and curvature == "concave up":
+		return I*sigma/(75-y_global)
+
+	if sigma>0 and curvature == "concave down":
+		return I*sigma/(75-y_global)
+
+	if sigma<0 and curvature == "concave down":
+		return I*sigma/y_global
 
 def get_sigma_critical(k, t, b):
 	return k * (math.pi)**2 * YOUNG / 12 / (1-POISSON**2) * (t/b)**2
