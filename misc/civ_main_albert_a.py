@@ -38,12 +38,11 @@ CEMENT_SHEAR = 2
 # ------------------------------ Design A - PRIMARY INPUTS ------------------------------ #
 
 # CHANGE THIS FOR DIFFERENT DESIGNS
+y_local = [0.635,1.905,37.5, 73.095,74.365, 75.635,87.5,99.365]
 
-y_local = [74.365,0.635,37.5,37.5,73.095,73.095]
+b_h_dim = [(100,1.27),(22.54,1.27), (2.54,69.92), (22.54,1.27), (100,1.27),(100,1.27),(2.54,22.46),(100,1.27)]
 
-b_h_dim = [(100,1.27),(80,1.27), (1.27,72.46), (1.27,72.46), (10,1.27), (10,1.27)]
-
-bm.set_height(75)
+bm.set_height(100)
 
 
 
@@ -75,15 +74,13 @@ print("Second moment of area is: %g (mm^4)" % I_global)
 
 # CHANGE THIS FOR DIFFERENT DESIGNS
 
-y_local_Q = [1.27/2,(y_global-1.27)/2+1.27,(y_global-1.27)/2+1.27]
+y_local_Q = [56.308,55.038,27.7015]
 
-
-A_local_Q = [csp.get_A_local(80,1.27),csp.get_A_local(y_global-1.27,1.27),csp.get_A_local(y_global-1.27,1.27)]
+A_local_Q = [csp.get_A_local(100,1.27),csp.get_A_local(22.54,1.27),csp.get_A_local(2.54,54.403)]
 
 y_local_Q_glue = [75-1.27/2]
 
 A_local_Q_glue = [csp.get_A_local(100,1.27)]
-
 # ------------------------------ Design A - Q at the centroidal axis ------------------------------ #
 
 
@@ -218,7 +215,6 @@ dg.add_point_load(point_loads, 858, 200/3)
 dg.add_point_load(point_loads, 1022, 200/3)
 dg.add_point_load(point_loads, 1198, 200/3)
 '''
-
 
 
 reaction_forces = dg.get_reaction_forces(point_loads)

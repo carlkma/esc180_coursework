@@ -25,14 +25,21 @@ test = {"sick": 1, "man.": 3, "at": 1, "what": 1, "nothing": 1, "do": 1, "is": 1
 "believe": 1, "all": 1, "my": 2, "certain": 1, "However,": 1, "and": 1, "for": 1,
 "unattractive": 1, "spiteful": 1, "about": 1, "a": 2, "diseased.": 1}
 
+print("Problem 1a")
+print(word_counts)
+print()
 print(test==word_counts)
 
 def top10(L):
-    largest = [-1] * 10
+    largest = [-999999] * 10
     for integer in L:
         if integer > min(largest):
             largest[largest.index(min(largest))] = integer
     return largest
+
+print()
+print("Problem 1b")
+print(top10([4242,525232,23,24242,534,42,535,3636,77,35,635,88,4,1]))
 
 def get_ten_most_frequent(word_counts):
     items = list(word_counts.items())
@@ -44,6 +51,8 @@ def get_ten_most_frequent(word_counts):
 
 pride = open("pride.txt", encoding="latin-1").read().split()
 word_counts = get_word_count(pride)
+print()
+print("Problem 1c")
 print(get_ten_most_frequent(word_counts))
 
 # Problem 2 - See hello.html

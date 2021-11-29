@@ -26,7 +26,6 @@ import civ_midspan_deflection as msd
 # ------------------------------ CONSTANTS: Material Property ------------------------------ #
 
 
-DIM = [813,1016,1.27]
 T_STRENGTH = 30
 C_STRENGTH = 6
 SHEAR_STRENGTH = 4
@@ -37,14 +36,13 @@ CEMENT_SHEAR = 2
 
 # ------------------------------ Design A - PRIMARY INPUTS ------------------------------ #
 
+
 # CHANGE THIS FOR DIFFERENT DESIGNS
-
-y_local = [74.365,0.635,37.5,37.5,73.095,73.095]
-
-b_h_dim = [(100,1.27),(80,1.27), (1.27,72.46), (1.27,72.46), (10,1.27), (10,1.27)]
-
-bm.set_height(75)
-
+y_local = [36.23,36.23,71.825, 71.825, 75.635, 66.297]
+# CHANGE THIS FOR DIFFERENT DESIGNS
+b_h_dim = [(1.27,72.46),(1.27,72.46), (10,1.27), (10,1.27), (100,6.35), (77.46,1.27)]
+# CHANGE THIS FOR DIFFERENT DESIGNS
+bm.set_height(78.81)
 
 
 # ------------------------------ Design A - y_global ------------------------------ #
@@ -75,10 +73,9 @@ print("Second moment of area is: %g (mm^4)" % I_global)
 
 # CHANGE THIS FOR DIFFERENT DESIGNS
 
-y_local_Q = [1.27/2,(y_global-1.27)/2+1.27,(y_global-1.27)/2+1.27]
+y_local_Q = [33.43,33.43, 66.297]
 
-
-A_local_Q = [csp.get_A_local(80,1.27),csp.get_A_local(y_global-1.27,1.27),csp.get_A_local(y_global-1.27,1.27)]
+A_local_Q = [csp.get_A_local(1.27,66.87),csp.get_A_local(1.27,66.87),csp.get_A_local(77.46,1.27)]
 
 y_local_Q_glue = [75-1.27/2]
 
@@ -159,15 +156,15 @@ print()
 
 # ------------------------------ Design A - 4.6 ------------------------------ #
 print()
-sigma_critical_1 = -1* bm.get_sigma_critical(0.425, 1.27, 10)
+sigma_critical_1 = -1* bm.get_sigma_critical(0.425, 6.35, 1.27)
 moment_4_6a = bm.get_bending_moment(y_global, I_global, sigma_critical_1, "concave up")
 print("4.6a: Bending moment causing matboard flexural buckling failure is: %g (N*mm)" % moment_4_6a)
 
-sigma_critical_2 = -1* bm.get_sigma_critical(4, 1.27, 77.46)
+sigma_critical_2 = -1* bm.get_sigma_critical(4, 6.35, 94.92)
 moment_4_6b = bm.get_bending_moment(y_global, I_global, sigma_critical_2, "concave up")
 print("4.6b: Bending moment causing matboard flexural buckling failure is: %g (N*mm)" % moment_4_6b)
 
-sigma_critical_3 = -1* bm.get_sigma_critical(6, 1.27, 32.028)
+sigma_critical_3 = -1* bm.get_sigma_critical(6, 1.27, 5.59)
 moment_4_6c = bm.get_bending_moment(y_global, I_global, sigma_critical_3, "concave up")
 print("4.6c: Bending moment causing matboard flexural buckling failure is: %g (N*mm)" % moment_4_6c)
 
@@ -197,7 +194,7 @@ dg.add_point_load(point_loads, 1250, 185)
 '''
 
 
-
+'''
 # Train Case 1
 point_loads = dg.reset_loads()
 dg.add_point_load(point_loads, 102, 200/3)
@@ -206,9 +203,9 @@ dg.add_point_load(point_loads, 442, 200/3)
 dg.add_point_load(point_loads, 618, 200/3)
 dg.add_point_load(point_loads, 782, 200/3)
 dg.add_point_load(point_loads, 958, 200/3)
-
-
 '''
+
+
 # Train Case 2
 point_loads = dg.reset_loads()
 dg.add_point_load(point_loads, 342, 200/3)
@@ -217,7 +214,7 @@ dg.add_point_load(point_loads, 682, 200/3)
 dg.add_point_load(point_loads, 858, 200/3)
 dg.add_point_load(point_loads, 1022, 200/3)
 dg.add_point_load(point_loads, 1198, 200/3)
-'''
+
 
 
 

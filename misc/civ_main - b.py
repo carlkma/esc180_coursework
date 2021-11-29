@@ -71,9 +71,9 @@ print("Second moment of area is: %g (mm^4)" % I_global)
 
 
 
-y_local_Q = [1.27/2,(y_global-1.27)/2+1.27,(y_global-1.27)/2+1.27]
+y_local_Q = [33.466,33.466]
 
-A_local_Q = [csp.get_A_local(80,1.27),csp.get_A_local(y_global-1.27,1.27),csp.get_A_local(y_global-1.27,1.27)]
+A_local_Q = [csp.get_A_local(1.27,66.932),csp.get_A_local(1.27,66.932)]
 
 y_local_Q_glue = [75-1.27/2]
 
@@ -83,6 +83,7 @@ A_local_Q_glue = [csp.get_A_local(100,1.27)]
 
 
 Q_cent = csp.get_Q(A_local_Q,y_local_Q,y_global)
+
 print("First moment of area at the centroidal axis is: %g (mm^3)" % Q_cent)
 
 

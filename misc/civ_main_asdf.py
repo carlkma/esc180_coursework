@@ -39,11 +39,11 @@ CEMENT_SHEAR = 2
 
 # CHANGE THIS FOR DIFFERENT DESIGNS
 
-y_local = [74.365,0.635,37.5,37.5,73.095,73.095]
+y_local = [37.73,37.73,74.825,74.825,78.635]
 
-b_h_dim = [(100,1.27),(80,1.27), (1.27,72.46), (1.27,72.46), (10,1.27), (10,1.27)]
+b_h_dim = [(1.27,75.46),(1.27,75.46),(10,1.27),(10,1.27),(100,6.35)]
 
-bm.set_height(75)
+bm.set_height(81.81)
 
 
 
@@ -75,13 +75,10 @@ print("Second moment of area is: %g (mm^4)" % I_global)
 
 # CHANGE THIS FOR DIFFERENT DESIGNS
 
-y_local_Q = [1.27/2,(y_global-1.27)/2+1.27,(y_global-1.27)/2+1.27]
+y_local_Q = [34.66, 34.66]
+A_local_Q = [csp.get_A_local(1.27,69.3),csp.get_A_local(1.27,69.3)]
 
-
-A_local_Q = [csp.get_A_local(80,1.27),csp.get_A_local(y_global-1.27,1.27),csp.get_A_local(y_global-1.27,1.27)]
-
-y_local_Q_glue = [75-1.27/2]
-
+y_local_Q_glue = [0.635]
 A_local_Q_glue = [csp.get_A_local(100,1.27)]
 
 # ------------------------------ Design A - Q at the centroidal axis ------------------------------ #
@@ -104,6 +101,7 @@ print()
 # get_shear_force(Q, I, b, tau)
 shear_4_1 = [sf.get_shear_force(Q_cent, I_global, 1.27*2, sf.get_tau_ultimate("matboard"))]
 print("4.1: Shear force causing matboard shear failure is: %g (N)" % shear_4_1[0])
+print("verified")
 print()
 
 
@@ -111,13 +109,14 @@ print()
 print()
 shear_4_2 = [sf.get_shear_force(Q_glue, I_global, 11.27*2, sf.get_tau_ultimate("glue"))]
 print("4.2: Shear force causing glue shear failure is: %g (N)" % shear_4_2[0])
+print("verified")
 print()
 
 
 # ------------------------------ Design A - 4.3 ------------------------------ #
 print()
 input_t = 1.27
-input_h = 73.73
+input_h = 100 - 1.27
 spacing_vertical_stiffeners = [550,510,190]
 
 shear_4_3 = []
@@ -130,6 +129,7 @@ for input_a in spacing_vertical_stiffeners:
 	print("4.3 Step %i: Shear force causing matboard shear buckling failure is: %g (N)" % (shear_4_3.index(shear_4_3_temp),shear_4_3_temp))
 
 print("4.3 Conclusion: Shear force causing matboard shear buckling failure is: %g (N)" % min(shear_4_3))
+print("Verified")
 print()
 
 
@@ -159,15 +159,15 @@ print()
 
 # ------------------------------ Design A - 4.6 ------------------------------ #
 print()
-sigma_critical_1 = -1* bm.get_sigma_critical(0.425, 1.27, 10)
+sigma_critical_1 = -1* bm.get_sigma_critical(0.425, 6.35, 10)
 moment_4_6a = bm.get_bending_moment(y_global, I_global, sigma_critical_1, "concave up")
 print("4.6a: Bending moment causing matboard flexural buckling failure is: %g (N*mm)" % moment_4_6a)
 
-sigma_critical_2 = -1* bm.get_sigma_critical(4, 1.27, 77.46)
+sigma_critical_2 = -1* bm.get_sigma_critical(4, 6.35, 77.46)
 moment_4_6b = bm.get_bending_moment(y_global, I_global, sigma_critical_2, "concave up")
 print("4.6b: Bending moment causing matboard flexural buckling failure is: %g (N*mm)" % moment_4_6b)
 
-sigma_critical_3 = -1* bm.get_sigma_critical(6, 1.27, 32.028)
+sigma_critical_3 = -1* bm.get_sigma_critical(6, 1.27, 6.14)
 moment_4_6c = bm.get_bending_moment(y_global, I_global, sigma_critical_3, "concave up")
 print("4.6c: Bending moment causing matboard flexural buckling failure is: %g (N*mm)" % moment_4_6c)
 
@@ -183,6 +183,9 @@ moment_4_6 = [moment_4_6a,moment_4_6b,moment_4_6c,moment_4_6d,moment_4_6e]
 print("4.6 Conclusion: Bending moment causing matboard tension failure is: %g (N*mm)" % max(moment_4_6))
 print()
 
+momentaaa = bm.get_bending_moment(y_global, I_global, 14.723, "concave down")
+momentaaab = bm.get_bending_moment(y_global, I_global, 14.723, "concave down")
+print(momentaaa,momentaaab)
 
 # ------------------------------ Design A - PLOT ------------------------------ #
 # ------------------------------ Design A - PLOT ------------------------------ #
@@ -197,7 +200,7 @@ dg.add_point_load(point_loads, 1250, 185)
 '''
 
 
-
+'''
 # Train Case 1
 point_loads = dg.reset_loads()
 dg.add_point_load(point_loads, 102, 200/3)
@@ -206,9 +209,9 @@ dg.add_point_load(point_loads, 442, 200/3)
 dg.add_point_load(point_loads, 618, 200/3)
 dg.add_point_load(point_loads, 782, 200/3)
 dg.add_point_load(point_loads, 958, 200/3)
-
-
 '''
+
+
 # Train Case 2
 point_loads = dg.reset_loads()
 dg.add_point_load(point_loads, 342, 200/3)
@@ -217,7 +220,7 @@ dg.add_point_load(point_loads, 682, 200/3)
 dg.add_point_load(point_loads, 858, 200/3)
 dg.add_point_load(point_loads, 1022, 200/3)
 dg.add_point_load(point_loads, 1198, 200/3)
-'''
+
 
 
 

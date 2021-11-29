@@ -39,11 +39,11 @@ CEMENT_SHEAR = 2
 
 # CHANGE THIS FOR DIFFERENT DESIGNS
 
-y_local = [74.365,0.635,37.5,37.5,73.095,73.095]
+y_local = [36.23,36.23,71.825, 71.825, 75.635, 66.297]
 
-b_h_dim = [(100,1.27),(80,1.27), (1.27,72.46), (1.27,72.46), (10,1.27), (10,1.27)]
+b_h_dim = [(1.27,72.46),(1.27,72.46), (10,1.27), (10,1.27), (100,6.35), (77.46,1.27)]
 
-bm.set_height(75)
+bm.set_height(78.81)
 
 
 
@@ -75,10 +75,9 @@ print("Second moment of area is: %g (mm^4)" % I_global)
 
 # CHANGE THIS FOR DIFFERENT DESIGNS
 
-y_local_Q = [1.27/2,(y_global-1.27)/2+1.27,(y_global-1.27)/2+1.27]
+y_local_Q = [33.43,33.43, 66.297]
 
-
-A_local_Q = [csp.get_A_local(80,1.27),csp.get_A_local(y_global-1.27,1.27),csp.get_A_local(y_global-1.27,1.27)]
+A_local_Q = [csp.get_A_local(1.27,66.87),csp.get_A_local(1.27,66.87),csp.get_A_local(77.46,1.27)]
 
 y_local_Q_glue = [75-1.27/2]
 
@@ -102,15 +101,15 @@ print("First moment of area at the glue surface is: %g (mm^3)" % Q_glue)
 # ------------------------------ Design A - 4.1 ------------------------------ #
 print()
 # get_shear_force(Q, I, b, tau)
-shear_4_1 = [sf.get_shear_force(Q_cent, I_global, 1.27*2, sf.get_tau_ultimate("matboard"))]
-print("4.1: Shear force causing matboard shear failure is: %g (N)" % shear_4_1[0])
+shear_4_1 = sf.get_shear_force(Q_cent, I_global, 1.27*2, sf.get_tau_ultimate("matboard"))
+print("4.1: Shear force causing matboard shear failure is: %g (N)" % shear_4_1)
 print()
 
 
 # ------------------------------ Design A - 4.2 ------------------------------ #
 print()
-shear_4_2 = [sf.get_shear_force(Q_glue, I_global, 11.27*2, sf.get_tau_ultimate("glue"))]
-print("4.2: Shear force causing glue shear failure is: %g (N)" % shear_4_2[0])
+shear_4_2 = sf.get_shear_force(Q_glue, I_global, 11.27*2, sf.get_tau_ultimate("glue"))
+print("4.2: Shear force causing glue shear failure is: %g (N)" % shear_4_2)
 print()
 
 
@@ -129,33 +128,32 @@ for input_a in spacing_vertical_stiffeners:
 	shear_4_3.append(shear_4_3_temp)
 	print("4.3 Step %i: Shear force causing matboard shear buckling failure is: %g (N)" % (shear_4_3.index(shear_4_3_temp),shear_4_3_temp))
 
-print("4.3 Conclusion: Shear force causing matboard shear buckling failure is: %g (N)" % min(shear_4_3))
+shear_4_3_conclusion = min(shear_4_3)
+print("4.3 Conclusion: Shear force causing matboard shear buckling failure is: %g (N)" % shear_4_3_conclusion)
 print()
 
 
 # ------------------------------ Design A - 4.4 ------------------------------ #
 print()
-moment_4_4 = [] 
-for region in ["concave up", "concave down"]:
-	moment_4_4_temp = bm.get_bending_moment(y_global, I_global, bm.get_sigma_ultimate("tension"), region)
-	moment_4_4.append(moment_4_4_temp)
-	print("4.4 Step %i: Bending moment causing matboard tension failure is: %g (N*mm)" % (moment_4_4.index(moment_4_4_temp),moment_4_4_temp))
-
-print("4.4 Conclusion: Bending moment causing matboard tension failure is: %g (N*mm)" % min(moment_4_4))
+moment_4_4a = bm.get_bending_moment(y_global, I_global, bm.get_sigma_ultimate("tension"), "concave up")
+print("4.4a: Bending moment causing matboard tension failure is: %g (N*mm)" % moment_4_4a)
+moment_4_4b = bm.get_bending_moment(y_global, I_global, bm.get_sigma_ultimate("tension"), "concave down")
+print("4.4b: Bending moment causing matboard tension failure is: %g (N*mm)" % moment_4_4b)
+moment_4_4 = min(moment_4_4a,moment_4_4b)
+print("4.4 Conclusion: Bending moment causing matboard tension failure is: %g (N*mm)" % moment_4_4)
 print()
 
 
 # ------------------------------ Design A - 4.5 ------------------------------ #
-
 print()
-moment_4_5 = [] 
-for region in ["concave up", "concave down"]:
-	moment_4_5_temp = bm.get_bending_moment(y_global, I_global, bm.get_sigma_ultimate("compression"), region)
-	moment_4_5.append(moment_4_5_temp)
-	print("4.5 Step %i: Bending moment causing matboard compression failure is: %g (N*mm)" % (moment_4_5.index(moment_4_5_temp),moment_4_5_temp))
-
-print("4.5 Conclusion: Bending moment causing matboard compression failure is: %g (N*mm)" % min(moment_4_5))
+moment_4_5a = bm.get_bending_moment(y_global, I_global, bm.get_sigma_ultimate("compression"), "concave up")
+print("4.5a: Bending moment causing matboard compression failure is: %g (N*mm)" % moment_4_5a)
+moment_4_5b = bm.get_bending_moment(y_global, I_global, bm.get_sigma_ultimate("compression"), "concave down")
+print("4.5b: Bending moment causing matboard compression failure is: %g (N*mm)" % moment_4_5b)
+moment_4_5 = max(moment_4_5a,moment_4_5b)
+print("4.5 Conclusion: Bending moment causing matboard tension failure is: %g (N*mm)" % moment_4_5)
 print()
+
 
 # ------------------------------ Design A - 4.6 ------------------------------ #
 print()
@@ -179,8 +177,8 @@ sigma_critical_5 = -1* bm.get_sigma_critical(4, 1.27, 77.46)
 moment_4_6e = bm.get_bending_moment(y_global, I_global, sigma_critical_5, "concave down")
 print("4.6e: Bending moment causing matboard flexural buckling failure is: %g (N*mm)" % moment_4_6e)
 
-moment_4_6 = [moment_4_6a,moment_4_6b,moment_4_6c,moment_4_6d,moment_4_6e]
-print("4.6 Conclusion: Bending moment causing matboard tension failure is: %g (N*mm)" % max(moment_4_6))
+moment_4_6 = max(moment_4_6a,moment_4_6b,moment_4_6c,moment_4_6d,moment_4_6e)
+print("4.6 Conclusion: Bending moment causing matboard tension failure is: %g (N*mm)" % moment_4_6)
 print()
 
 
@@ -189,15 +187,15 @@ print()
 # ------------------------------ Design A - PLOT ------------------------------ #
 
 
-'''
+
 # Point Load
 point_loads = dg.reset_loads()
 dg.add_point_load(point_loads, 550, 185)
 dg.add_point_load(point_loads, 1250, 185)
+
+
+
 '''
-
-
-
 # Train Case 1
 point_loads = dg.reset_loads()
 dg.add_point_load(point_loads, 102, 200/3)
@@ -206,7 +204,7 @@ dg.add_point_load(point_loads, 442, 200/3)
 dg.add_point_load(point_loads, 618, 200/3)
 dg.add_point_load(point_loads, 782, 200/3)
 dg.add_point_load(point_loads, 958, 200/3)
-
+'''
 
 '''
 # Train Case 2
@@ -225,10 +223,42 @@ reaction_forces = dg.get_reaction_forces(point_loads)
 sfd = dg.generate_sfd(point_loads, reaction_forces)
 bmd = dg.generate_bmd(sfd)
 
-dg.plot_all(sfd, bmd, spacing_vertical_stiffeners, shear_4_1, shear_4_2, shear_4_3, moment_4_4, moment_4_5, moment_4_6)
 
 
+plt.subplot(1, 2, 1)
+plt.title("SFD")
+plt.xlabel("Distance from Left Support (mm)")
+plt.ylabel("Shear Force (N)")
+ax = plt.gca()
+ax.grid(True)
+plt.axhline(y=0, c="black")
 
+plt.axhline(y=shear_4_1, c="red",label='4.1 Matboard Shear (Tension) Failure')
+plt.axhline(y=-1*shear_4_1, c="red",label='4.1 Matboard Shear (Compression) Failure')
+
+spacing_vertical_stiffeners = [0] + spacing_vertical_stiffeners
+for i in range(len(shear_4_3)):
+	print(shear_4_3[i])
+	print(spacing_vertical_stiffeners[i])
+	print(spacing_vertical_stiffeners[i+1])
+	plt.axhline(y=shear_4_3[i], xmin=spacing_vertical_stiffeners[i], xmax=spacing_vertical_stiffeners[i+1])
+
+plt.xlim(0,1300)
+plt.legend(loc="best")
+plt.plot(*zip(*sfd))
+
+plt.subplot(1, 2, 2)
+plt.title("BMD")
+plt.xlabel("Distance from Left Support (mm)")
+plt.ylabel("Bending Moment (Nmm)")
+ax = plt.gca()
+ax.grid(True)
+ax.invert_yaxis()
+plt.axhline(y=0, c="black")
+plt.xlim(0,1300)
+plt.plot(*zip(*bmd))
+
+plt.show()
 
 '''
 # Train Case Variable

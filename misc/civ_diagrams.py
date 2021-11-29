@@ -89,3 +89,153 @@ def generate_bmd(sfd):
 	plt.show()
 '''
 	return bmd
+
+def get_bmd_x_intercept(bmd):
+	all_x_int = []
+	for i in range(1, len(bmd)):
+		start = bmd[i-1]
+		end = bmd[i]
+		if start[1] * end[1] <= 0:
+			print(start,end)
+			slope = (end[1] - start[1]) / (end[0] - start[0])
+			constant = end[1] - slope * end[0]
+			
+			one_x_int = -1*constant / slope
+			if not int(one_x_int) in [x[0] for x in bmd]:
+				all_x_int.append(one_x_int)
+			
+
+	return all_x_int
+
+
+def plot_all(sfd, bmd, spacing_vertical_stiffeners, shear_4_1, shear_4_2, shear_4_3, moment_4_4, moment_4_5, moment_4_6):
+	plt.subplot(2, 3, 1)
+	plt.title("SFD")
+	plt.xlabel("Distance from Left Support (mm)")
+	plt.ylabel("Shear Force (N)")
+	ax = plt.gca()
+	ax.grid(True)
+	plt.axhline(y=0, c="black")
+
+	plt.xlim(0,1300)
+	plt.legend(loc="best")
+	plt.plot(*zip(*sfd))
+
+
+
+
+
+	plt.subplot(2, 3, 2)
+	plt.title("SFD")
+	plt.xlabel("Distance from Left Support (mm)")
+	plt.ylabel("Shear Force (N)")
+	ax = plt.gca()
+	ax.grid(True)
+	plt.axhline(y=0, c="black")
+
+	plt.axhline(y=shear_4_1[0], c="red",label='4.1 Mat Shear Fail')
+	plt.axhline(y=-1*shear_4_1[0], c="green",label='4.1 Mat Shear Fail')
+
+	plt.xlim(0,1300)
+	plt.legend(loc="best")
+	plt.plot(*zip(*sfd))
+
+
+
+
+	plt.subplot(2, 3, 3)
+	plt.title("SFD")
+	plt.xlabel("Distance from Left Support (mm)")
+	plt.ylabel("Shear Force (N)")
+	ax = plt.gca()
+	ax.grid(True)
+	plt.axhline(y=0, c="black")
+
+	spacing_vertical_stiffeners = [0] + spacing_vertical_stiffeners
+	for i in range(len(shear_4_3)):
+		print(shear_4_3[i])
+		print(sum(spacing_vertical_stiffeners[:i+1]))
+		print(sum(spacing_vertical_stiffeners[:i+2]))
+		ax.vlines(x=sum(spacing_vertical_stiffeners[:i+1]),ymin=shear_4_3[i-1],ymax=shear_4_3[i]) # note index problem
+		ax.hlines(y=shear_4_3[i], xmin=sum(spacing_vertical_stiffeners[:i+1]), xmax=sum(spacing_vertical_stiffeners[:i+2]),color="red",label='Matb Shear (T) buckling fail')
+		ax.vlines(x=sum(spacing_vertical_stiffeners[:i+1]),ymin=-1*shear_4_3[i-1],ymax=-1*shear_4_3[i]) # note index problem
+		ax.hlines(y=-1*shear_4_3[i], xmin=sum(spacing_vertical_stiffeners[:i+1]), xmax=sum(spacing_vertical_stiffeners[:i+2]),color="green",label='Matb Shear (C) buckling fail')
+
+	plt.xlim(0,1300)
+	plt.legend(loc="best")
+	plt.plot(*zip(*sfd))
+
+
+
+
+
+
+	plt.subplot(2, 3, 4)
+	plt.title("BMD")
+	plt.xlabel("Distance from Left Support (mm)")
+	plt.ylabel("Bending Moment (Nmm)")
+	ax = plt.gca()
+	ax.grid(True)
+	ax.invert_yaxis()
+	plt.axhline(y=0, c="black")
+
+
+	plt.xlim(0,1300)
+	plt.plot(*zip(*bmd))
+
+
+	x_int = get_bmd_x_intercept(bmd)
+	if len(x_int) > 0:
+		x_int = x_int[0]
+	else:
+		x_int = 1250
+
+
+	plt.subplot(2, 3, 5)
+	plt.title("BMD")
+	plt.xlabel("Distance from Left Support (mm)")
+	plt.ylabel("Bending Moment (Nmm)")
+	ax = plt.gca()
+	ax.grid(True)
+	ax.invert_yaxis()
+	plt.axhline(y=0, c="black")
+
+	ax.hlines(y=moment_4_4[0], xmin=0, xmax=x_int, color="red")
+	ax.vlines(x=x_int,ymin=min(moment_4_4[0],-1*moment_4_4[1]),ymax=max(moment_4_4[0],-1*moment_4_4[1])) # note index problem
+	ax.hlines(y=-1*moment_4_4[1], xmin=x_int, xmax=1250,color="red")
+
+	ax.hlines(y=-1*moment_4_5[0], xmin=0, xmax=x_int,color="green")
+	ax.vlines(x=x_int,ymin=min(-1*moment_4_5[0],moment_4_5[1]),ymax=max(-1*moment_4_5[0],moment_4_5[1])) # note index problem
+	ax.hlines(y=moment_4_5[1], xmin=x_int, xmax=1250,color="green")
+
+	plt.xlim(0,1300)
+	plt.plot(*zip(*bmd))
+
+
+
+
+
+	plt.subplot(2, 3, 6)
+	plt.title("BMD")
+	plt.xlabel("Distance from Left Support (mm)")
+	plt.ylabel("Bending Moment (Nmm)")
+	ax = plt.gca()
+	ax.grid(True)
+	ax.invert_yaxis()
+	plt.axhline(y=0, c="black")
+
+	ax.hlines(y=-1*moment_4_6[0], xmin=0, xmax=x_int,color="red")
+	ax.hlines(y=-1*moment_4_6[1], xmin=0, xmax=x_int,color="green")
+	ax.hlines(y=-1*moment_4_6[2], xmin=0, xmax=x_int,color="yellow")
+
+	ax.hlines(y=moment_4_6[3], xmin=x_int, xmax=1250)
+	ax.hlines(y=moment_4_6[4], xmin=x_int, xmax=1250)
+
+	ax.vlines(x=x_int,ymin=min(-1*moment_4_6[2],moment_4_6[3]),ymax=max(-1*moment_4_6[2],moment_4_6[3])) # note index problem
+
+
+	plt.xlim(0,1300)
+	plt.plot(*zip(*bmd))
+
+
+	plt.show()
