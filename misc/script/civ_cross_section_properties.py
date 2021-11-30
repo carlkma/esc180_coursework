@@ -9,13 +9,8 @@
 #  - Albert Zhang
 
 
-# ------------------------------ IMPORT MODULES ------------------------------ #
-
-# None
-
 # ------------------------------ CONSTANTS: Material Property ------------------------------ #
 
-DIM = [813,1016,1.27]
 T_STRENGTH = 30
 C_STRENGTH = 6
 SHEAR_STRENGTH = 4
@@ -29,6 +24,7 @@ def get_A_local(b,h):
 	return b*h
 
 # ------------------------------ Centroidal axis ------------------------------ #
+
 
 def get_y_global(y_local,A_local):
 	'''
@@ -59,7 +55,9 @@ def get_y_global(y_local,A_local):
 	y_global = sum_y_local_A_local / sum(A_local) # y_global formula
 	return y_global
 
+
 # ------------------------------ Second moment of area ------------------------------ #
+
 
 def get_I_local(b,h):
 	return b*h**3/12
@@ -89,13 +87,18 @@ def get_I_global(I_local, A_local, y_local, y_global):
 		i.e. 10.88
 		units in mm
 	'''
+
 	if not ( len(I_local) == len(A_local) == len(y_local) ): # check if I_local, y_local, and A_local have the same length
 		print("Error: unequal dimensions")
 		return None
+
 	I_global = 0
+
 	for i in range(len(y_local)):
 		I_global += I_local[i] + A_local[i] * (y_local[i]-y_global)**2 # I_global formula
+	
 	return I_global
+
 
 # ------------------------------ First moment of area ------------------------------ #
 
@@ -116,11 +119,12 @@ def get_Q(A_local,y_local, y_global):
 		i.e. 10.88
 		units in mm^3
 	'''
+
 	if not ( len(A_local) == len(y_local) ): # check if A_local and y_local have the same length
 		print("Error: unequal dimensions")
 		return None
 
-	Q = 0 # numerator of Q formula
+	Q = 0
 
 	for i in range(len(y_local)):
 		Q += A_local[i] * abs(y_local[i]-y_global)

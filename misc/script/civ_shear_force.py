@@ -15,7 +15,6 @@ import math
 
 # ------------------------------ CONSTANTS: Material Property ------------------------------ #
 
-DIM = [813,1016,1.27]
 T_STRENGTH = 30
 C_STRENGTH = 6
 SHEAR_STRENGTH = 4
@@ -24,6 +23,7 @@ POISSON = 0.2
 CEMENT_SHEAR = 2
 
 # ------------------------------ 4.1-4.3 Shear force ------------------------------ #
+
 # 4.1 Shear force causing matboard shear failure
 # 4.2 Shear force causing glue shear failure
 # 4.3 Shear force causing matboard shear buckling failure

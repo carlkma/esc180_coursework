@@ -15,7 +15,6 @@ import math
 
 # ------------------------------ CONSTANTS: Material Property ------------------------------ #
 
-DIM = [813,1016,1.27]
 T_STRENGTH = 30
 C_STRENGTH = 6
 SHEAR_STRENGTH = 4
@@ -28,6 +27,7 @@ CEMENT_SHEAR = 2
 height = None
 
 # ------------------------------ 4.4-4.6 Bending moment ------------------------------ #
+
 # 4.4 Bending moment causing matboard tension failure
 # 4.5 Bending moment causing matboard compression failure
 # 4.6 Bending moment causing matboard flexural buckling failure
@@ -47,10 +47,8 @@ def get_bending_moment(y_global, I, sigma, curvature):
 		return I*sigma/y_global
 	if sigma<0 and curvature == "concave up":
 		return I*sigma/(height-y_global)
-
 	if sigma>0 and curvature == "concave down":
 		return I*sigma/(height-y_global)
-
 	if sigma<0 and curvature == "concave down":
 		return I*sigma/y_global
 
