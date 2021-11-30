@@ -196,12 +196,12 @@ print()
 # ------------------------------ Design A - PLOT ------------------------------ #
 
 
-
+'''
 # Point Load
 point_loads = dg.reset_loads()
-dg.add_point_load(point_loads, 550, 185)
-dg.add_point_load(point_loads, 1250, 185)
-
+dg.add_point_load(point_loads, 550, 0.5)
+dg.add_point_load(point_loads, 1250, 0.5)
+'''
 
 '''
 # Train Case 1
@@ -215,7 +215,7 @@ dg.add_point_load(point_loads, 958, 200/3)
 '''
 
 
-'''
+
 # Train Case 2
 point_loads = dg.reset_loads()
 dg.add_point_load(point_loads, 342, 200/3)
@@ -224,11 +224,14 @@ dg.add_point_load(point_loads, 682, 200/3)
 dg.add_point_load(point_loads, 858, 200/3)
 dg.add_point_load(point_loads, 1022, 200/3)
 dg.add_point_load(point_loads, 1198, 200/3)
-'''
+
 
 
 reaction_forces = dg.get_reaction_forces(point_loads)
 sfd = dg.generate_sfd(point_loads, reaction_forces)
 bmd = dg.generate_bmd(sfd)
+
+print(sfd)
+print(bmd)
 
 dg.plot_all(sfd, bmd, spacing_vertical_stiffeners, shear_4_1, shear_4_2, shear_4_3, moment_4_4, moment_4_5, moment_4_6)

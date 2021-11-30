@@ -126,7 +126,7 @@ print()
 print()
 input_t = 1.27
 input_h = 100 - 1.27
-spacing_vertical_stiffeners = [550,510,190]
+spacing_vertical_stiffeners = [30,475,15,30,14,432,49,30,12,173,30]
 
 shear_4_3 = []
 
@@ -169,27 +169,27 @@ print()
 
 # ------------------------------ Design A - 4.6 ------------------------------ #
 print()
-sigma_critical_1 = bm.get_sigma_critical(0.425, 3.81, 10)
+sigma_critical_1 = bm.get_sigma_critical(0.425,3.81,10)
 moment_4_6a = bm.get_bending_moment(y_global, I_global, sigma_critical_1, "concave up")
 print("4.6a: Bending moment causing matboard flexural buckling failure is: %g (N*mm)" % moment_4_6a)
 
-sigma_critical_2 = bm.get_sigma_critical(4, 3.81, 77.46)
+sigma_critical_2 = bm.get_sigma_critical(4,3.81,77.46)
 moment_4_6b = bm.get_bending_moment(y_global, I_global, sigma_critical_2, "concave up")
 print("4.6b: Bending moment causing matboard flexural buckling failure is: %g (N*mm)" % moment_4_6b)
 
-sigma_critical_3 = bm.get_sigma_critical(6, 1.27, 9.1558)
+sigma_critical_3 = bm.get_sigma_critical(6,1.27,9.14958)
 moment_4_6c = bm.get_bending_moment(y_global, I_global, sigma_critical_3, "concave up")
 print("4.6c: Bending moment causing matboard flexural buckling failure is: %g (N*mm)" % moment_4_6c)
 
-sigma_critical_4 = -1* bm.get_sigma_critical(0.425  ,  1.27 , 10)
+sigma_critical_4 = -1* bm.get_sigma_critical(0.425,1.27,10) #good
 moment_4_6d = bm.get_bending_moment(y_global, I_global, sigma_critical_4, "concave down")
 print("4.6d: Bending moment causing matboard flexural buckling failure is: %g (N*mm)" % moment_4_6d)
 
-sigma_critical_5 = -1* bm.get_sigma_critical(4, 1.27, 77.46)
+sigma_critical_5 = -1* bm.get_sigma_critical(4,1.27,77.46) #good
 moment_4_6e = bm.get_bending_moment(y_global, I_global, sigma_critical_5, "concave down")
 print("4.6e: Bending moment causing matboard flexural buckling failure is: %g (N*mm)" % moment_4_6e)
 
-sigma_critical_6 = -1* bm.get_sigma_critical(6 , 1.27 , 38.13)
+sigma_critical_6 = -1* bm.get_sigma_critical(6,1.27,38.13)
 moment_4_6f = bm.get_bending_moment(y_global, I_global, sigma_critical_5, "concave down")
 print("4.f: Bending moment causing matboard flexural buckling failure is: %g (N*mm)" % moment_4_6e)
 
@@ -206,7 +206,6 @@ point_loads = dg.reset_loads()
 dg.add_point_load(point_loads, 550, 0.5)
 dg.add_point_load(point_loads, 1250, 0.5)
 '''
-
 
 '''
 # Train Case 1
@@ -235,5 +234,7 @@ dg.add_point_load(point_loads, 1198, 200/3)
 reaction_forces = dg.get_reaction_forces(point_loads)
 sfd = dg.generate_sfd(point_loads, reaction_forces)
 bmd = dg.generate_bmd(sfd)
+print(sfd)
+print(bmd)
 
 dg.plot_all(sfd, bmd, spacing_vertical_stiffeners, shear_4_1, shear_4_2, shear_4_3, moment_4_4, moment_4_5, moment_4_6)
