@@ -70,3 +70,7 @@ def get_tangential_deviation_mid(x_cord_curvature, y_cord_curvature):
 
 def get_midspan_deflection(delta_right, delta_mid):
 	return delta_right * 0.5 - delta_mid
+
+
+# Sample Call
+# 1.374

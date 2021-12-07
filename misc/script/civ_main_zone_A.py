@@ -207,7 +207,7 @@ dg.add_point_load(point_loads, 550, 0.5)
 dg.add_point_load(point_loads, 1250, 0.5)
 '''
 
-'''
+
 # Train Case 1
 point_loads = dg.reset_loads()
 dg.add_point_load(point_loads, 102, 200/3)
@@ -216,10 +216,10 @@ dg.add_point_load(point_loads, 442, 200/3)
 dg.add_point_load(point_loads, 618, 200/3)
 dg.add_point_load(point_loads, 782, 200/3)
 dg.add_point_load(point_loads, 958, 200/3)
+
+
+
 '''
-
-
-
 # Train Case 2
 point_loads = dg.reset_loads()
 dg.add_point_load(point_loads, 342, 200/3)
@@ -229,7 +229,7 @@ dg.add_point_load(point_loads, 858, 200/3)
 dg.add_point_load(point_loads, 1022, 200/3)
 dg.add_point_load(point_loads, 1198, 200/3)
 
-
+'''
 reaction_forces = dg.get_reaction_forces(point_loads)
 sfd = dg.generate_sfd(point_loads, reaction_forces)
 bmd = dg.generate_bmd(sfd)

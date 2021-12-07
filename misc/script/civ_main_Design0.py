@@ -56,7 +56,7 @@ for shape in b_h_dim:
 
 y_global = csp.get_y_global(y_local, A_local)
 print("Global centroidal axis at: %g (mm) above base" % y_global)
-
+# Global centroidal axis at: 41.7016 (mm) above base
 
 # ------------------------------ Design A - I_global ------------------------------ #
 
@@ -69,6 +69,7 @@ for shape in b_h_dim:
 # calculate the global second moment of area of the cross section
 I_global = csp.get_I_global(I_local, A_local, y_local, y_global)
 print("Second moment of area is: %g (mm^4)" % I_global)
+# Second moment of area is: 415685 (mm^4)
 
 
 
@@ -93,6 +94,7 @@ A_local_Q_glue = [csp.get_A_local(100,1.27)]
 
 Q_cent = csp.get_Q(A_local_Q,y_local_Q,y_global)
 print("First moment of area at the centroidal axis is: %g (mm^3)" % Q_cent)
+# First moment of area at the centroidal axis is: 6248.44 (mm^3)
 
 
 # ------------------------------ Design A - Q at the glue surface ------------------------------ #
@@ -100,7 +102,7 @@ print("First moment of area at the centroidal axis is: %g (mm^3)" % Q_cent)
 
 Q_glue = csp.get_Q(A_local_Q_glue,y_local_Q_glue,y_global)
 print("First moment of area at the glue surface is: %g (mm^3)" % Q_glue)
-
+# First moment of area at the glue surface is: 4148.26 (mm^3)
 
 # ------------------------------ Design A - 4.1 ------------------------------ #
 
@@ -108,6 +110,7 @@ print("First moment of area at the glue surface is: %g (mm^3)" % Q_glue)
 print()
 shear_4_1 = [sf.get_shear_force(Q_cent, I_global, 1.27*2, sf.get_tau_ultimate("matboard"))]
 print("4.1: Shear force causing matboard shear failure is: %g (N)" % shear_4_1[0])
+# 4.1: Shear force causing matboard shear failure is: 675.906 (N)
 print()
 
 
@@ -117,6 +120,7 @@ print()
 print()
 shear_4_2 = [sf.get_shear_force(Q_glue, I_global, 11.27*2, sf.get_tau_ultimate("glue"))]
 print("4.2: Shear force causing glue shear failure is: %g (N)" % shear_4_2[0])
+# 4.2: Shear force causing glue shear failure is: 4517.34 (N)
 print()
 
 
@@ -137,6 +141,12 @@ for input_a in spacing_vertical_stiffeners:
 	print("4.3 Step %i: Shear force causing matboard shear buckling failure is: %g (N)" % (shear_4_3.index(shear_4_3_temp),shear_4_3_temp))
 
 print("4.3 Conclusion: Shear force causing matboard shear buckling failure is: %g (N)" % min(shear_4_3))
+'''
+4.3 Step 0: Shear force causing matboard shear buckling failure is: 494.523 (N)
+4.3 Step 1: Shear force causing matboard shear buckling failure is: 497.04 (N)
+4.3 Step 2: Shear force causing matboard shear buckling failure is: 608.446 (N)
+4.3 Conclusion: Shear force causing matboard shear buckling failure is: 494.523 (N)
+'''
 print()
 
 
@@ -152,6 +162,12 @@ for region in ["concave up", "concave down"]:
 print("4.4 Conclusion: Bending moment causing matboard tension failure is: %g (N*mm)" % min(moment_4_4))
 print()
 
+'''
+4.4 Step 0: Bending moment causing matboard tension failure is: 299043 (N*mm)
+4.4 Step 1: Bending moment causing matboard tension failure is: 374509 (N*mm)
+4.4 Conclusion: Bending moment causing matboard tension failure is: 299043 (N*mm)
+'''
+
 
 # ------------------------------ Design A - 4.5 ------------------------------ #
 
@@ -165,6 +181,14 @@ for region in ["concave up", "concave down"]:
 
 print("4.5 Conclusion: Bending moment causing matboard compression failure is: %g (N*mm)" % min(moment_4_5))
 print()
+
+
+'''
+
+4.5 Step 0: Bending moment causing matboard compression failure is: -74901.7 (N*mm)
+4.5 Step 1: Bending moment causing matboard compression failure is: -59808.6 (N*mm)
+4.5 Conclusion: Bending moment causing matboard compression failure is: -74901.7 (N*mm)
+'''
 
 
 # ------------------------------ Design A - 4.6 ------------------------------ #
@@ -193,15 +217,25 @@ moment_4_6 = [moment_4_6a,moment_4_6b,moment_4_6c,moment_4_6d,moment_4_6e]
 print("4.6 Conclusion: Bending moment causing matboard tension failure is: %g (N*mm)" % max(moment_4_6))
 print()
 
+'''
+4.6a: Bending moment causing matboard flexural buckling failure is: 234162 (N*mm)
+4.6b: Bending moment causing matboard flexural buckling failure is: 36730.9 (N*mm)
+4.6c: Bending moment causing matboard flexural buckling failure is: 322269 (N*mm)
+4.6d: Bending moment causing matboard flexural buckling failure is: -202242 (N*mm)
+4.6e: Bending moment causing matboard flexural buckling failure is: -36730.9 (N*mm)
+4.6 Conclusion: Bending moment causing matboard tension failure is: 322269 (N*mm)
+
+'''
+
 # ------------------------------ Design A - PLOT ------------------------------ #
 
 
-'''
+
 # Point Load
 point_loads = dg.reset_loads()
 dg.add_point_load(point_loads, 550, 0.5)
 dg.add_point_load(point_loads, 1250, 0.5)
-'''
+
 
 '''
 # Train Case 1
@@ -214,8 +248,7 @@ dg.add_point_load(point_loads, 782, 200/3)
 dg.add_point_load(point_loads, 958, 200/3)
 '''
 
-
-
+'''
 # Train Case 2
 point_loads = dg.reset_loads()
 dg.add_point_load(point_loads, 342, 200/3)
@@ -224,7 +257,7 @@ dg.add_point_load(point_loads, 682, 200/3)
 dg.add_point_load(point_loads, 858, 200/3)
 dg.add_point_load(point_loads, 1022, 200/3)
 dg.add_point_load(point_loads, 1198, 200/3)
-
+'''
 
 
 reaction_forces = dg.get_reaction_forces(point_loads)
