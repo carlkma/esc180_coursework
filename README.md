@@ -7,7 +7,7 @@ This repository contains my code for labs and projects of the course [ESC180](ht
 Although this is a public repository under an open-source license, students taking the same course shall refrain from copying and/or plagiarizing the code. Details regarding the University’s policy on Academic Integrity can be found [here](https://www.academicintegrity.utoronto.ca/). The owner of this repository is **NOT** responsible for any academic offenses.
 
 ## Note
-This repository is made private as of October 14, 2021.
+This repository is made public as of January 8, 2022.
 
 ## License
 
